@@ -12,17 +12,26 @@ var driver    = new webdriver.Builder()
 
 
 var Color = require("colors");
-// var red = Color(255, 255, 255);
-// var green = Color(0, 255, 0);
-// var yellow = Color(255, 255, 0);
 
 var signs = {
 	ok :  "\u2714",
 	not_ok : "\u2716"
 }
 
+
 // var visualizrUrl  = 'http://vis.startscreen.com/trending';
-var visualizrUrl  = 'http://vis.startscreen.com/news.yahoo.com';
+var visualizrUrl = 'http://vis.startscreen.com/news.yahoo.com';
+
+// start tests
+console.log("****** starting moniotoring tests *******");
+if (process.argv.length > 0){
+	process.argv.forEach(function(arg) {
+		if (arg.indexOf("url=") > -1){
+			visualizrUrl = arg.substring(arg.indexOf("=") + 1);
+		}
+	});
+}
+
 
 
 driver.get(visualizrUrl);
@@ -47,16 +56,13 @@ setTimeout(function () {
 			clearIntervalAndCloseBrowser(interval, driver);
 			var str = ` * number of articels = ${articles.length} ${signs.ok}`;
 			console.log(str.green);
-			// openCategories();
 			runScript();
-			//driver.quit();
 		}
 	}, 1000);
 }, 5000);
 
 function clearIntervalAndCloseBrowser(interval, browserObj) {
 	clearInterval(interval);
-	// browserObj.quit();
 }
 
 
@@ -78,7 +84,6 @@ function runScript(){
 						console.error(` * No items in categories menu!' ${signs.not_ok}`.red);
 					}
 					else{
-						//driver.findElement(By.className("vex-icon-menu")).click().then(
 						driver.findElement(By.xpath('//*[@id="vis-top-bar"]/ul/li[1]/a/span[1]'))
 							.click()
 							.then(
@@ -86,7 +91,7 @@ function runScript(){
 									var textElementToCompare = "";
 									var msg = ` * There are ${result} items in categories menu ${signs.ok}`;
 									console.log(msg.green);	
-									console.log(' * Simulating clicking on first category.....');
+									console.log(' ===> Simulating clicking on first category...');
 
 
 									setTimeout(function() {
@@ -122,17 +127,6 @@ function runScript(){
 													}
 												);
 									}, 2000);
-
-
-									
-										// .click()
-										// .then(function(item) {
-										// 	setTimeout(function() {
-										// 		console.log(' * redirecting.... ');
-
-										
-										// 	}, 5000);	
-										// });
 							});
 					}	
 				});
@@ -144,21 +138,10 @@ function runScript(){
 	)
 }
 
-
-// function getMenuElement() {
-// 	driver.executeScript("")
-// }
-
 function checkIfWasRedirectedCorrectly(textToCompare) {
 	setTimeout(
 		function() {
-			// driver.executeScript('document.querySelector("#menuleft ul").children[1].children[1].children[1].children[1].children[0].children[0].click()').then(function(response) {
-			// 	//console.log(" * Response is " + response);
-			// });	
-
-			// console.log(' * Waiting for page to redirect....');
 			setTimeout(function() {
-				//driver.executeScript('return window.location.pathname.split("/")').then(function(result) {}, 1500);
 				driver.executeScript('return document.querySelector("#vis-top-bar ul").children[1].children[0].innerText').then(
 					function(response) {
 						var msg = "";
@@ -169,8 +152,6 @@ function checkIfWasRedirectedCorrectly(textToCompare) {
 						else{
 							console.error(` !!! page did not redirect correctly !!! ${signs.not_ok}`.red);
 						}
-
-						//driver.quit();
 					}
 				);
 			}, 4000);	
@@ -196,35 +177,6 @@ function openFirstFeed() {
 
 
 function onArticleLoaded() {
-	// driver.findElements(By.className('article-banner'))
-	// 	.then(function(elmArr) {
-	// 		console.log(` * There are ${elmArr.length} banner containers on page`);
-
-	// 		// var scriptToExecute = 'var banners = document.querySelectorAll(".article-banner");' + 
-	// 		// 'console.log(banners);\n' + 
-	// 		// 'if (banners.length > 0){\n' + 
-	// 		// 	'banners.forEach(banner => {\n' + 
-	// 		// 		'if (banner.children.length){\n' + 
-	// 		// 			'var innerItems = banner.children[0].children;\n' +
-	// 		// 			'console.log(innerItems);\n' +
-						
-	// 		// 		'}\n' + 
-	// 		// 		'else{\n' + 
-	// 		// 			'var str = "banner with id " + banner.getAttribute("id") + " has no children!";\n' + 
-	// 		// 			'console.log(str.red);\n' + 
-	// 		// 		'}\n' +
-	// 		// 	'});\n' +
-	// 		// '};';
-
-	// 		// driver.executeScript(scriptToExecute)
-	// 		// 	.then(function(response) {
-	// 		// 		console.log("response ->", response);
-	// 		// 	});
-	// 	})
-	// 	
-	// 	
-	// 	
-	// 	
 	var script = `	var banners = document.querySelectorAll(".article-banner");
 				  	var notLoadedCounter = 0;
 			  	  	var loadedCounter = 0;
@@ -317,6 +269,8 @@ function checkValidityOfArticle() {
 				msg = ` * Loaded ${response.loaded} of ${response.totalNumberOfElements} social elements. ${signs.not_ok}`; 
 				console.log(msg.red);
 			}
+
+			driver.quit();
 		});
 }
 

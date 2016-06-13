@@ -2,18 +2,20 @@ var webdriver = require('selenium-webdriver');
 
 var By        = webdriver.By;
 var until     = webdriver.until;
+var chrome    = require('../node_modules/selenium-webdriver/chrome');
 
-var userAgent = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36";
+// var ua        = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36";
 
 var driver    = new webdriver.Builder()
-				.withCapabilities({'userAgent' : userAgent})
-				.forBrowser('chrome', 'ANDROID', 'ANDROID')
-				.build();
+				 .forBrowser('chrome')
+				 .setChromeOptions(new chrome.Options()
+				.setMobileEmulation({deviceName: 'Google Nexus 5'}))
+				 .build();
 
 
-var Color = require("colors");
+var Color     = require("colors");
 
-var signs = {
+var signs     = {
 	ok :  "\u2714",
 	not_ok : "\u2716"
 }
@@ -23,7 +25,8 @@ var signs = {
 var visualizrUrl = 'http://vis.startscreen.com/news.yahoo.com';
 
 // start tests
-console.log("****** starting moniotoring tests *******");
+console.log("****** starting monitoring tests *******");
+
 if (process.argv.length > 0){
 	process.argv.forEach(function(arg) {
 		if (arg.indexOf("url=") > -1){
@@ -35,7 +38,7 @@ if (process.argv.length > 0){
 
 
 driver.get(visualizrUrl);
-driver.switchTo().alert().accept();
+//driver.switchTo().alert().accept();
 
 setTimeout(function () {
 	var counter = 0;

@@ -4,7 +4,7 @@ var webdriver = require('selenium-webdriver');
 
 var By        = webdriver.By;
 var until     = webdriver.until;
-var chrome    = require('../node_modules/selenium-webdriver/chrome');
+var chrome    = require('selenium-webdriver/chrome');
 
 var userName  = "lior.shtivelman@vexigo.com";
 var accessKey = "69409b40-ca42-4cea-b9ca-2b16d7c3fcbe";
@@ -13,7 +13,7 @@ var accessKey = "69409b40-ca42-4cea-b9ca-2b16d7c3fcbe";
 
 var driver    = new webdriver.Builder()
 				 .setChromeOptions(new chrome.Options()
-				 .setMobileEmulation({deviceName: 'Google Nexus 5'}))
+				 					.setMobileEmulation({deviceName: 'Google Nexus 5'}))
 				 //.withCapabilities({ 'userame' : userName, 'accessKey': accessKey})
 				 //.usingServer('http://' + userName + ':' + accessKey + '@ondemand.saucelabs.com:80/wd/hub')
 				 .forBrowser('chrome')

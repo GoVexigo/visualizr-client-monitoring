@@ -326,7 +326,7 @@ function fnCheckValidityOfArticle() {
 
 function fnIsAggregated(value) {
 	if (typeof(value) != 'undefined'){
-		return (value == 1 || value == '1') ? true : false;
+		return (value == 1 || value == '1' || value.toLowerCase() == 'true' || value == true) ? true : false;
 	}
 	else{
 		return false;
